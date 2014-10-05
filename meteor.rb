@@ -1,6 +1,5 @@
 class Meteor
   SIZE_SCALE = 0.2
-  SPEED = 5
 
   def initialize(window, window_width, window_height)
     @window_width = window_width
@@ -9,6 +8,7 @@ class Meteor
     @meteor_image = Gosu::Image.new(window, "assets/meteor.png", true)
     @x = rand(@window_width - width)
     @y = - height
+    @speed = random_speed
   end
 
   def draw
@@ -16,7 +16,7 @@ class Meteor
   end
 
   def move
-    @y += SPEED
+    @y += @speed
   end
 
   def deletable?
@@ -31,5 +31,9 @@ class Meteor
 
   def height
     @meteor_image.height * SIZE_SCALE
+  end
+
+  def random_speed
+    rand(4) + 3
   end
 end
