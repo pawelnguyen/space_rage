@@ -20,7 +20,6 @@ class Game < Gosu::Window
   def update
     @ship.move_left if left_button_down?
     @ship.move_right if right_button_down?
-    create_meteors
     update_meteors
   end
 
@@ -49,11 +48,17 @@ class Game < Gosu::Window
   end
 
   def update_meteors
+    create_meteors
     @meteors.each(&:move)
+    destroy_meteors!
   end
 
   def draw_meteors
     @meteors.each(&:draw)
+  end
+
+  def destroy_meteors!
+    @meteors.delete_if(&:deletable?)
   end
 end
 
@@ -113,6 +118,10 @@ class Meteor
 
   def move
     @y += SPEED
+  end
+
+  def deletable?
+    @y > @window_height
   end
 
   private
