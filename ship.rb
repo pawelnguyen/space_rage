@@ -17,11 +17,11 @@ class Ship
   end
 
   def move_left
-    @x -= MOVE_OFFSET if x_within_window?(@x - MOVE_OFFSET)
+    @x -= MOVE_OFFSET if within_window?(@x - MOVE_OFFSET)
   end
 
   def move_right
-    @x += MOVE_OFFSET if x_within_window?(@x + MOVE_OFFSET)
+    @x += MOVE_OFFSET if within_window?(@x + MOVE_OFFSET)
   end
 
   private
@@ -34,7 +34,7 @@ class Ship
     @ship_image.height * SIZE_SCALE
   end
 
-  def x_within_window?(x)
+  def within_window?(x)
     x > width / 2 && x < @window_width - width / 2
   end
 end
