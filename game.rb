@@ -29,6 +29,10 @@ class Game < Gosu::Window
     draw_meteors
   end
 
+  def button_down(id)
+    close if id == Gosu::KbEscape
+  end
+
   private
 
   def left_button_down?
