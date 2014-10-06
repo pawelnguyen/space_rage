@@ -13,7 +13,7 @@ class Ship
   end
 
   def draw
-    @ship_image.draw_rot(@x, @y, 2, 180, 0.5, 0.5, SIZE_SCALE, SIZE_SCALE)
+    @ship_image.draw_rot(@x, @y, 1, 180, 0.5, 0.5, SIZE_SCALE, SIZE_SCALE)
   end
 
   def move_left
@@ -22,6 +22,18 @@ class Ship
 
   def move_right
     @x += MOVE_OFFSET if within_window?(@x + MOVE_OFFSET)
+  end
+
+  def collides_with?(object)
+    collides?(object.x, object.y, object.radius)
+  end
+
+  def collides?(x1, y1, r = 0)
+    Gosu.distance(x1, y1, @x, @y) < r + radius
+  end
+
+  def radius
+    width / 2 # simple for now
   end
 
   private

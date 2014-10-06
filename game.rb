@@ -1,6 +1,6 @@
 require 'gosu'
 require_relative 'ship'
-require_relative 'meteor'
+require_relative 'asteroid'
 
 class Game < Gosu::Window
   WIDTH = 1280
@@ -16,19 +16,19 @@ class Game < Gosu::Window
     @background_color.alpha = 100
 
     @ship = Ship.new(self, WIDTH, HEIGHT)
-    @meteors = []
+    @asteroids = []
   end
 
   def update
     @ship.move_left if left_button_down?
     @ship.move_right if right_button_down?
-    update_meteors
+    update_asteroids
   end
 
   def draw
     @background_image.draw(0, 0, 0, 1, 1, @background_color)
     @ship.draw
-    draw_meteors
+    draw_asteroids
   end
 
   def button_down(id)
@@ -45,26 +45,26 @@ class Game < Gosu::Window
     button_down?(Gosu::KbRight) || button_down?(Gosu::GpRight)
   end
 
-  def create_meteors
-    create_meteor if rand((1 / METEOR_CREATING_CHANCE) - 1) == 0
+  def create_asteroids
+    create_asteroid if rand((1 / METEOR_CREATING_CHANCE) - 1) == 0
   end
 
-  def create_meteor
-    @meteors << Meteor.new(self, WIDTH, HEIGHT)
+  def create_asteroid
+    @asteroids << Asteroid.new(self, WIDTH, HEIGHT)
   end
 
-  def update_meteors
-    create_meteors
-    @meteors.each(&:move)
-    destroy_meteors!
+  def update_asteroids
+    create_asteroids
+    @asteroids.each(&:move)
+    destroy_asteroids!
   end
 
-  def draw_meteors
-    @meteors.each(&:draw)
+  def draw_asteroids
+    @asteroids.each(&:draw)
   end
 
-  def destroy_meteors!
-    @meteors.delete_if(&:deletable?)
+  def destroy_asteroids!
+    @asteroids.delete_if(&:deletable?)
   end
 end
 
