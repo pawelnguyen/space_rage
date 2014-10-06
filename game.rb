@@ -20,14 +20,15 @@ class Game < Gosu::Window
   end
 
   def update
-    @ship.move_left if left_button_down?
-    @ship.move_right if right_button_down?
+    ship.move_left if left_button_down?
+    ship.move_right if right_button_down?
     update_asteroids
+    detect_collisions
   end
 
   def draw
     @background_image.draw(0, 0, 0, 1, 1, @background_color)
-    @ship.draw
+    ship.draw
     draw_asteroids
   end
 
@@ -50,21 +51,36 @@ class Game < Gosu::Window
   end
 
   def create_asteroid
-    @asteroids << Asteroid.new(self, WIDTH, HEIGHT)
+    asteroids << Asteroid.new(self, WIDTH, HEIGHT)
   end
 
   def update_asteroids
     create_asteroids
-    @asteroids.each(&:move)
+    asteroids.each(&:move)
     destroy_asteroids!
   end
 
   def draw_asteroids
-    @asteroids.each(&:draw)
+    asteroids.each(&:draw)
   end
 
   def destroy_asteroids!
-    @asteroids.delete_if(&:deletable?)
+    asteroids.delete_if(&:deletable?)
+  end
+
+  def detect_collisions
+    ship.reset_collisions!
+    asteroids.each do |asteroid|
+      ship.check_collision(asteroid)
+    end
+  end
+
+  def asteroids
+    @asteroids
+  end
+
+  def ship
+    @ship
   end
 end
 
