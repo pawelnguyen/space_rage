@@ -6,7 +6,7 @@ require_relative 'explosion'
 class Game < Gosu::Window
   WIDTH = 1280
   HEIGHT = 800
-  METEOR_CREATING_CHANCE = 0.9
+  METEOR_CREATING_CHANCE = 0.1
 
   def initialize
     super WIDTH, HEIGHT, false
