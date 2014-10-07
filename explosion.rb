@@ -11,7 +11,7 @@ class Explosion
 
   def draw
     image = @explosion_animation[(Gosu::milliseconds - @start_time) / TIME_PER_TILE % TILES_AMOUNT]
-    image.draw(@x, @y, 3, SIZE_SCALE, SIZE_SCALE) unless animation_finished?
+    image.draw_rot(@x, @y, 3, 0, 0.5, 0.5, SIZE_SCALE, SIZE_SCALE) unless animation_finished?
   end
 
   def animation_finished?

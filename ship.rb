@@ -10,11 +10,10 @@ class Ship
     @window_height = window_height
     @x = @window_width / 2
     @y = @window_height - height / 2 - BOTTOM_OFFSET
-    @colliding_objects = []
   end
 
   def draw
-    @ship_image.draw_rot(@x, @y, 1, 180, 0.5, 0.5, SIZE_SCALE, SIZE_SCALE, color)
+    @ship_image.draw_rot(@x, @y, 1, 180, 0.5, 0.5, SIZE_SCALE, SIZE_SCALE)
   end
 
   def move_left
@@ -23,14 +22,6 @@ class Ship
 
   def move_right
     @x += MOVE_OFFSET if within_window?(@x + MOVE_OFFSET)
-  end
-
-  def reset_collisions!
-    @colliding_objects = []
-  end
-
-  def add_colliding(object)
-    @colliding_objects << object
   end
 
   def collides_with?(object)
@@ -57,13 +48,5 @@ class Ship
 
   def within_window?(x)
     x > width / 2 && x < @window_width - width / 2
-  end
-
-  def color
-    if @colliding_objects.any?
-      Gosu::Color::RED
-    else
-      Gosu::Color::WHITE.tap {|c| c.alpha = 255}
-    end
   end
 end
