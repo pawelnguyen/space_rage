@@ -1,5 +1,5 @@
 class Asteroid
-  attr_reader :x, :y, :radius, :size_scale, :asteroid_image
+  attr_reader :x, :y
 
   def initialize(window, window_width, window_height)
     @window_width = window_width
@@ -16,7 +16,7 @@ class Asteroid
   end
 
   def draw
-    asteroid_image.draw_rot(x, y, 2, @rotation, 0.5, 0.5, size_scale, size_scale)
+    @asteroid_image.draw_rot(@x, @y, 2, @rotation, 0.5, 0.5, @size_scale, @size_scale)
   end
 
   def move
@@ -25,7 +25,7 @@ class Asteroid
   end
 
   def deletable?
-    y - height / 2 > @window_height
+    @y - height / 2 > @window_height
   end
 
   def radius
@@ -35,11 +35,11 @@ class Asteroid
   private
 
   def width
-    asteroid_image.width * size_scale
+    @asteroid_image.width * @size_scale
   end
 
   def height
-    asteroid_image.height * size_scale
+    @asteroid_image.height * @size_scale
   end
 
   def random_speed

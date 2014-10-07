@@ -10,7 +10,7 @@ class Ship
     @window_height = window_height
     @x = @window_width / 2
     @y = @window_height - height / 2 - BOTTOM_OFFSET
-    @collisioning_objects = []
+    @colliding_objects = []
   end
 
   def draw
@@ -29,8 +29,8 @@ class Ship
     @colliding_objects = []
   end
 
-  def check_collision(object)
-    @colliding_objects << object if collides_with?(object)
+  def add_colliding(object)
+    @colliding_objects << object
   end
 
   def collides_with?(object)

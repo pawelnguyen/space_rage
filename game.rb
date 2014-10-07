@@ -18,21 +18,21 @@ class Game < Gosu::Window
 
     @ship = Ship.new(self, WIDTH, HEIGHT)
     @asteroids = []
-    @explosion = Explosion.new(self, 400, 400)
+    @explosions = []
   end
 
   def update
-    ship.move_left if left_button_down?
-    ship.move_right if right_button_down?
+    @ship.move_left if left_button_down?
+    @ship.move_right if right_button_down?
     update_asteroids
-    detect_collisions
+    update_collisions!
   end
 
   def draw
     @background_image.draw(0, 0, 0, 1, 1, @background_color)
-    ship.draw
+    @ship.draw
     draw_asteroids
-    @explosion.draw
+    draw_explosions
   end
 
   def button_down(id)
@@ -54,36 +54,36 @@ class Game < Gosu::Window
   end
 
   def create_asteroid
-    asteroids << Asteroid.new(self, WIDTH, HEIGHT)
+    @asteroids << Asteroid.new(self, WIDTH, HEIGHT)
   end
 
   def update_asteroids
     create_asteroids
-    asteroids.each(&:move)
-    destroy_asteroids!
+    @asteroids.each(&:move)
+    remove_useless!(@asteroids)
   end
 
   def draw_asteroids
-    asteroids.each(&:draw)
+    @asteroids.each(&:draw)
   end
 
-  def destroy_asteroids!
-    asteroids.delete_if(&:deletable?)
+  def draw_explosions
+    @explosions.each(&:draw)
   end
 
-  def detect_collisions
-    ship.reset_collisions!
-    asteroids.each do |asteroid|
-      ship.check_collision(asteroid)
+  def update_collisions!
+    @ship.reset_collisions!
+    @asteroids.each do |asteroid|
+      if @ship.collides_with?(asteroid)
+        @explosions << Explosion.create_from(self, asteroid)
+        @ship.add_colliding(asteroid)
+      end
     end
+    remove_useless!(@explosions)
   end
 
-  def asteroids
-    @asteroids
-  end
-
-  def ship
-    @ship
+  def remove_useless!(array)
+    array.delete_if(&:deletable?)
   end
 end
 
