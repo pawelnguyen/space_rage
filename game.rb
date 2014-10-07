@@ -6,7 +6,7 @@ require_relative 'explosion'
 class Game < Gosu::Window
   WIDTH = 1280
   HEIGHT = 800
-  METEOR_CREATING_CHANCE = 0.1
+  METEOR_CREATING_CHANCE = 0.9
 
   def initialize
     super WIDTH, HEIGHT, false
@@ -50,7 +50,7 @@ class Game < Gosu::Window
   end
 
   def create_asteroids
-    create_asteroid if rand((1 / METEOR_CREATING_CHANCE) - 1) == 0
+    create_asteroid if rand(99) < METEOR_CREATING_CHANCE * 100
   end
 
   def create_asteroid
