@@ -1,0 +1,22 @@
+class Explosion
+  TILES_AMOUNT = 40
+  SIZE_SCALE = 1
+  TIME_PER_TILE = 25
+
+  attr_reader :x, :y
+
+  def initialize(window, x, y)
+    @explosion_animation = Gosu::Image.load_tiles(window, "assets/explosion.png", 128, 128, false)
+    @start_time = Gosu::milliseconds
+    @x, @y = x, y
+  end
+
+  def draw
+    image = @explosion_animation[(Gosu::milliseconds - @start_time) / TIME_PER_TILE % TILES_AMOUNT]
+    image.draw(x, y, 3, SIZE_SCALE, SIZE_SCALE) unless animation_finished?
+  end
+
+  def animation_finished?
+    Gosu::milliseconds - @start_time > TIME_PER_TILE * TILES_AMOUNT
+  end
+end

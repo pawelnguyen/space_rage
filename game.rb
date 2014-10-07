@@ -1,6 +1,7 @@
 require 'gosu'
 require_relative 'ship'
 require_relative 'asteroid'
+require_relative 'explosion'
 
 class Game < Gosu::Window
   WIDTH = 1280
@@ -17,6 +18,7 @@ class Game < Gosu::Window
 
     @ship = Ship.new(self, WIDTH, HEIGHT)
     @asteroids = []
+    @explosion = Explosion.new(self, 400, 400)
   end
 
   def update
@@ -30,6 +32,7 @@ class Game < Gosu::Window
     @background_image.draw(0, 0, 0, 1, 1, @background_color)
     ship.draw
     draw_asteroids
+    @explosion.draw
   end
 
   def button_down(id)

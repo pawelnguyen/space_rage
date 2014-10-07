@@ -12,7 +12,7 @@ class Asteroid
     @rotation_direction = random_rotation_direction
     @size_scale = random_size_scale
     @x = rand(@window_width - width / 2) + width / 2
-    @y = - height
+    @y = -height
   end
 
   def draw
