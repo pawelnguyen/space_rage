@@ -3,6 +3,7 @@ class Ship
   MOVE_OFFSET = 5
   BOTTOM_OFFSET = 30
   WIDTH = 146
+  HIT_TIME_LENGTH = 250
 
   def initialize(window, window_width, window_height)
     @ship_image = Gosu::Image.new(window, "assets/ship.png", true)
@@ -13,7 +14,7 @@ class Ship
   end
 
   def draw
-    @ship_image.draw_rot(@x, @y, 1, 180, 0.5, 0.5, SIZE_SCALE, SIZE_SCALE)
+    @ship_image.draw_rot(@x, @y, 1, 180, 0.5, 0.5, SIZE_SCALE, SIZE_SCALE, color)
   end
 
   def move_left
@@ -36,6 +37,14 @@ class Ship
     width / 2 # simple for now
   end
 
+  def hit!
+    @hit_time = Gosu::milliseconds
+  end
+
+  def is_hit?
+    @hit_time && (Gosu::milliseconds - @hit_time < HIT_TIME_LENGTH)
+  end
+
   private
 
   def width
@@ -48,5 +57,9 @@ class Ship
 
   def within_window?(x)
     x > width / 2 && x < @window_width - width / 2
+  end
+
+  def color
+    is_hit? ? Gosu::Color::RED : Gosu::Color::WHITE.tap{|c| c.alpha = 255}
   end
 end

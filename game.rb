@@ -73,7 +73,10 @@ class Game < Gosu::Window
 
   def update_collisions!
     @asteroids.delete_if do |asteroid|
-      @explosions << Explosion.create_from(self, asteroid) if @ship.collides_with?(asteroid)
+      if @ship.collides_with?(asteroid)
+        @ship.hit!
+        @explosions << Explosion.create_from(self, asteroid)
+      end
     end
     remove_useless!(@explosions)
   end
