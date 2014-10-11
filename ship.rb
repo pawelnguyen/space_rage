@@ -6,6 +6,8 @@ class Ship
   BOTTOM_OFFSET = 30
   WIDTH = 146
   HIT_TIME_LENGTH = 250
+  INITIAL_HEALTH = 100
+  HIT_DAMAGE = 5
 
   attr_reader :window, :window_height, :window_width
 
@@ -40,6 +42,8 @@ class Ship
 
   def hit!
     @hit_time = Gosu::milliseconds
+    @health = health - HIT_DAMAGE if health > 0
+    health_bar.set_percentage(health_percentage)
   end
 
   def is_hit?
@@ -82,5 +86,13 @@ class Ship
 
   def health_bar_offset
     height / 2 * 1.1
+  end
+
+  def health
+    @health ||= INITIAL_HEALTH
+  end
+
+  def health_percentage
+    health.to_f / INITIAL_HEALTH
   end
 end
