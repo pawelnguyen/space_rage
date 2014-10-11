@@ -10,27 +10,19 @@ class Game < Gosu::Window
 
   def initialize
     super WIDTH, HEIGHT, false
-    self.caption = "Hello game!"
-
-    @background_image = Gosu::Image.new(self, "assets/space.jpg", true)
-    @background_color = Gosu::Color::WHITE
-    @background_color.alpha = 100
-
-    @ship = Ship.new(self, WIDTH, HEIGHT)
-    @asteroids = []
-    @explosions = []
+    self.caption = "Space Rage"
   end
 
   def update
-    @ship.move_left if left_button_down?
-    @ship.move_right if right_button_down?
+    ship.move_left if left_button_down?
+    ship.move_right if right_button_down?
     update_asteroids
     update_collisions!
   end
 
   def draw
-    @background_image.draw(0, 0, 0, 1, 1, @background_color)
-    @ship.draw
+    background_image.draw(0, 0, 0, 1, 1, background_color)
+    ship.draw
     draw_asteroids
     draw_explosions
   end
@@ -40,6 +32,26 @@ class Game < Gosu::Window
   end
 
   private
+
+  def background_image
+    @background_image ||= Gosu::Image.new(self, "assets/space.jpg", true)
+  end
+
+  def background_color
+    @background_color ||= Gosu::Color::WHITE.tap {|c| c.alpha = 100 }
+  end
+
+  def ship
+    @ship ||= Ship.new(self, WIDTH, HEIGHT)
+  end
+
+  def asteroids
+    @asteroids ||= []
+  end
+
+  def explosions
+    @explosions ||= []
+  end
 
   def left_button_down?
     button_down?(Gosu::KbLeft) || button_down?(Gosu::GpLeft)
@@ -54,31 +66,31 @@ class Game < Gosu::Window
   end
 
   def create_asteroid
-    @asteroids << Asteroid.new(self, WIDTH, HEIGHT)
+    asteroids << Asteroid.new(self, WIDTH, HEIGHT)
   end
 
   def update_asteroids
     create_asteroids
-    @asteroids.each(&:move)
-    remove_useless!(@asteroids)
+    asteroids.each(&:move)
+    remove_useless!(asteroids)
   end
 
   def draw_asteroids
-    @asteroids.each(&:draw)
+    asteroids.each(&:draw)
   end
 
   def draw_explosions
-    @explosions.each(&:draw)
+    explosions.each(&:draw)
   end
 
   def update_collisions!
-    @asteroids.delete_if do |asteroid|
-      if @ship.collides_with?(asteroid)
-        @ship.hit!
-        @explosions << Explosion.create_from(self, asteroid)
+    asteroids.delete_if do |asteroid|
+      if ship.collides_with?(asteroid)
+        ship.hit!
+        explosions << Explosion.create_from(self, asteroid)
       end
     end
-    remove_useless!(@explosions)
+    remove_useless!(explosions)
   end
 
   def remove_useless!(array)
