@@ -1,3 +1,5 @@
+require_relative 'health_bar'
+
 class Ship
   SIZE_SCALE = 0.5
   MOVE_OFFSET = 5
@@ -11,10 +13,12 @@ class Ship
     @window_height = window_height
     @x = @window_width / 2
     @y = @window_height - height / 2 - BOTTOM_OFFSET
+    @health_bar = HealthBar.new(window, width)
   end
 
   def draw
     @ship_image.draw_rot(@x, @y, 1, 180, 0.5, 0.5, SIZE_SCALE, SIZE_SCALE, color)
+    @health_bar.draw(@x, @y + health_bar_offset)
   end
 
   def move_left
@@ -61,5 +65,9 @@ class Ship
 
   def color
     is_hit? ? Gosu::Color::RED : Gosu::Color::WHITE.tap{|c| c.alpha = 255}
+  end
+
+  def health_bar_offset
+    height / 2 * 1.1
   end
 end
