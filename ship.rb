@@ -10,9 +10,7 @@ class Ship
   attr_reader :window, :window_height, :window_width
 
   def initialize(window, window_width, window_height)
-    @window = window
-    @window_width = window_width
-    @window_height = window_height
+    @window, @window_width, @window_height = window, window_width, window_height
   end
 
   def draw

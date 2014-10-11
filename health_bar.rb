@@ -7,9 +7,7 @@ class HealthBar
   attr_reader :window, :width, :percentage
 
   def initialize(window, width = 100, percentage = 100)
-    @window = window
-    @width = width
-    @percentage = percentage
+    @window, @width, @percentage = window, width, percentage
   end
 
   def draw(x, y)

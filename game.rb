@@ -98,5 +98,4 @@ class Game < Gosu::Window
   end
 end
 
-game = Game.new
-game.show
+Game.new.show
