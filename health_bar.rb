@@ -3,6 +3,7 @@ require 'RMagick'
 class HealthBar
   HEIGHT = 6
   COLOR = "green"
+  BACKGROUND_COLOR = "red"
 
   attr_reader :window, :initial_width, :percentage
 
@@ -11,7 +12,8 @@ class HealthBar
   end
 
   def draw(x, y)
-    health_bar_image.draw_rot(x, y, 4, 0, 0.5, 0.5)
+    image.draw_rot(left_corner(x), y, 5, 0, 0, 0.5)
+    background_image.draw_rot(x, y, 4, 0, 0.5, 0.5)
   end
 
   def set_percentage(percentage)
@@ -21,7 +23,7 @@ class HealthBar
 
   private
 
-  def health_bar_image
+  def image
     Gosu::Image.new(window, rmagick_image)
   end
 
@@ -31,5 +33,17 @@ class HealthBar
 
   def width
     percentage * initial_width
+  end
+
+  def left_corner(x)
+    x - initial_width / 2
+  end
+
+  def background_image
+    Gosu::Image.new(window, background_rmagick_image)
+  end
+
+  def background_rmagick_image
+    @background_rmagick_image ||= Magick::Image.new(width, HEIGHT) { self.background_color = BACKGROUND_COLOR }
   end
 end
