@@ -62,7 +62,7 @@ class Ship
   end
 
   def x
-    @x ||= window_width / 2
+    @x ||= rand(window_width - width) + width / 2
   end
 
   def y
