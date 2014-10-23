@@ -1,7 +1,8 @@
 require 'gosu'
-require_relative 'ship'
-require_relative 'asteroid'
-require_relative 'explosion'
+
+require_relative 'lib/ship'
+require_relative 'lib/asteroid'
+require_relative 'lib/explosion'
 
 class Game < Gosu::Window
   WIDTH = 1280
