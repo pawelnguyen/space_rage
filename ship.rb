@@ -9,10 +9,11 @@ class Ship
   INITIAL_HEALTH = 100
   HIT_DAMAGE = 5
 
-  attr_reader :window, :window_height, :window_width
+  attr_reader :window, :window_height, :window_width, :steering_left, :steering_right
 
-  def initialize(window, window_width, window_height)
+  def initialize(window, window_width, window_height, steering_left, steering_right)
     @window, @window_width, @window_height = window, window_width, window_height
+    @steering_left, @steering_right = steering_left, steering_right
   end
 
   def draw

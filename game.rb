@@ -7,6 +7,13 @@ class Game < Gosu::Window
   WIDTH = 1280
   HEIGHT = 800
   METEOR_CREATING_CHANCE = 0.1
+  SHIPS_AMOUNT = 4
+  SHIPS_STEERING = [
+      {left: Gosu::KbLeft, right: Gosu::KbRight},
+      {left: Gosu::KbQ, right: Gosu::KbW},
+      {left: Gosu::KbV, right: Gosu::KbB},
+      {left: Gosu::KbO, right: Gosu::KbP}
+  ]
 
   def initialize
     super WIDTH, HEIGHT, false
@@ -14,15 +21,14 @@ class Game < Gosu::Window
   end
 
   def update
-    ship.move_left if left_button_down?
-    ship.move_right if right_button_down?
+    update_ships
     update_asteroids
     update_collisions!
   end
 
   def draw
     background_image.draw(0, 0, 0, 1, 1, background_color)
-    ship.draw
+    draw_ships
     draw_asteroids
     draw_explosions
   end
@@ -41,8 +47,8 @@ class Game < Gosu::Window
     @background_color ||= Gosu::Color::WHITE.tap {|c| c.alpha = 100 }
   end
 
-  def ship
-    @ship ||= Ship.new(self, WIDTH, HEIGHT)
+  def ships
+    @ships ||= create_ships
   end
 
   def asteroids
@@ -69,10 +75,21 @@ class Game < Gosu::Window
     asteroids << Asteroid.new(self, WIDTH, HEIGHT)
   end
 
+  def create_ships
+    SHIPS_AMOUNT.times.map { |i| Ship.new(self, WIDTH, HEIGHT, SHIPS_STEERING[i][:left], SHIPS_STEERING[i][:right]) }
+  end
+
+  def update_ships
+    ships.each do |ship|
+      ship.move_left if button_down?(ship.steering_left)
+      ship.move_right if button_down?(ship.steering_right)
+    end
+  end
+
   def update_asteroids
     create_asteroids
     asteroids.each(&:move)
-    remove_useless!(asteroids)
+    remove_deletable!(asteroids)
   end
 
   def draw_asteroids
@@ -83,17 +100,23 @@ class Game < Gosu::Window
     explosions.each(&:draw)
   end
 
-  def update_collisions!
-    asteroids.delete_if do |asteroid|
-      if ship.collides_with?(asteroid)
-        ship.hit!
-        explosions << Explosion.create_from(self, asteroid)
-      end
-    end
-    remove_useless!(explosions)
+  def draw_ships
+    ships.each(&:draw)
   end
 
-  def remove_useless!(array)
+  def update_collisions!
+    asteroids.delete_if do |asteroid|
+      colliding_ships = ships.select {|ship| ship.collides_with?(asteroid)}
+      if colliding_ships.any?
+        colliding_ships.each(&:hit!)
+        explosions << Explosion.create_from(self, asteroid)
+        true
+      end
+    end
+    remove_deletable!(explosions)
+  end
+
+  def remove_deletable!(array)
     array.delete_if(&:deletable?)
   end
 end
