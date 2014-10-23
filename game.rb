@@ -59,14 +59,6 @@ class Game < Gosu::Window
     @explosions ||= []
   end
 
-  def left_button_down?
-    button_down?(Gosu::KbLeft) || button_down?(Gosu::GpLeft)
-  end
-
-  def right_button_down?
-    button_down?(Gosu::KbRight) || button_down?(Gosu::GpRight)
-  end
-
   def create_asteroids
     create_asteroid if rand(99) < METEOR_CREATING_CHANCE * 100
   end

@@ -54,7 +54,7 @@ class Ship
   private
 
   def ship_image
-    Gosu::Image.new(window, "assets/ship.png", true)
+    @ship_image ||= Gosu::Image.new(window, "assets/ship.png", true)
   end
 
   def x

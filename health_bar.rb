@@ -18,13 +18,14 @@ class HealthBar
 
   def set_percentage(percentage)
     @percentage = percentage if percentage > 0
+    @image = nil
     rmagick_image.resize!(width, HEIGHT)
   end
 
   private
 
   def image
-    Gosu::Image.new(window, rmagick_image)
+    @image ||= Gosu::Image.new(window, rmagick_image)
   end
 
   def rmagick_image
@@ -40,7 +41,7 @@ class HealthBar
   end
 
   def background_image
-    Gosu::Image.new(window, background_rmagick_image)
+    @background_image ||= Gosu::Image.new(window, background_rmagick_image)
   end
 
   def background_rmagick_image
