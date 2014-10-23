@@ -65,7 +65,7 @@ class Asteroid
   end
 
   def random_speed
-    rand(400) / 100.0 + 3
+    rand(400) / 100.0 + 4
   end
 
   def random_rotation

@@ -7,7 +7,7 @@ class Ship
   WIDTH = 146
   HIT_TIME_LENGTH = 250
   INITIAL_HEALTH = 100
-  HIT_DAMAGE = 5
+  HIT_DAMAGE = 10
 
   attr_reader :window, :window_height, :window_width, :steering_left, :steering_right
 
@@ -52,13 +52,7 @@ class Ship
   end
 
   def deletable?
-    health <= 0 && !is_hit?
-  end
-
-  private
-
-  def ship_image
-    @ship_image ||= Gosu::Image.new(window, "assets/ship.png", true)
+    health <= 0
   end
 
   def x
@@ -67,6 +61,12 @@ class Ship
 
   def y
     @y ||= window_height - height / 2 - BOTTOM_OFFSET
+  end
+
+  private
+
+  def ship_image
+    @ship_image ||= Gosu::Image.new(window, "assets/ship.png", true)
   end
 
   def health_bar

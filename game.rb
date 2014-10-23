@@ -75,8 +75,8 @@ class Game < Gosu::Window
   def update_ships
     remove_deletable!(ships) # explode them?
     ships.each do |ship|
-      ship.move_left if button_down?(ship.steering_left)
-      ship.move_right if button_down?(ship.steering_right)
+      ship.move_left if button_down?(ship.steering_left) && can_move_left?(ship)
+      ship.move_right if button_down?(ship.steering_right) && can_move_right?(ship)
     end
   end
 
@@ -112,6 +112,18 @@ class Game < Gosu::Window
 
   def remove_deletable!(array)
     array.delete_if(&:deletable?)
+  end
+
+  def can_move_left?(ship)
+    other_ships(ship).none? {|other_ship| ship.collides_with?(other_ship) && ship.x > other_ship.x } #TODO: dry
+  end
+
+  def can_move_right?(ship)
+    other_ships(ship).none? {|other_ship| ship.collides_with?(other_ship) && ship.x < other_ship.x }
+  end
+
+  def other_ships(ship)
+    ships - [ship]
   end
 end
 
