@@ -51,6 +51,10 @@ class Ship
     @hit_time && (Gosu::milliseconds - @hit_time < HIT_TIME_LENGTH)
   end
 
+  def deletable?
+    health <= 0 && !is_hit?
+  end
+
   private
 
   def ship_image

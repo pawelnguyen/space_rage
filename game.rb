@@ -72,6 +72,7 @@ class Game < Gosu::Window
   end
 
   def update_ships
+    remove_deletable!(ships) # explode them?
     ships.each do |ship|
       ship.move_left if button_down?(ship.steering_left)
       ship.move_right if button_down?(ship.steering_right)
